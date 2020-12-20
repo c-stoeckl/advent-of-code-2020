@@ -1,29 +1,19 @@
-map = File.readlines("3.txt").map(&:strip)
+MAP = File.readlines("3.txt").map(&:strip).freeze
+SLOPES = [[1, 1], [3, 1], [5, 1], [7, 1], [1, 2]].freeze
 
-def traverse(map, right, down)
+def traverse(right, down)
   x, y, trees = 0, 0, 0
 
-  while y < map.length - 1
+  while y < MAP.length - 1
     x += right
-    x %= map[y].length
+    x %= MAP[y].length
     y += down
 
-    trees += 1 if map[y][x] == "#"
+    trees += 1 if MAP[y][x] == "#"
   end
 
   return trees
 end
 
-def solve2(map)
-  results = []
-  slopes = [[1, 1], [3, 1], [5, 1], [7, 1], [1, 2]]
-
-  for slope in slopes
-    results << traverse(map, slope[0], slope[1])
-  end
-
-  return results.inject(:*)
-end
-
-puts traverse(map, 3, 1)
-puts solve2(map)
+puts traverse(3, 1)
+puts SLOPES.map { |(dx, dy)| traverse(dx, dy) }.inject(:*)
